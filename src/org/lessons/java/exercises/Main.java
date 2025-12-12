@@ -190,7 +190,7 @@ public class Main {
         int[] result = new int[0];
 
         for (int e : queue) {
-            if (!contains(result, e)) {
+            if (!contains(result, e) && e < 10000) {
                 System.out.println("result contains: " + e);
                 result = addElement(result, e);
             }
@@ -198,6 +198,8 @@ public class Main {
         return result;
     };
 
+        //Exercise 5
+    
     //Debug Utilities
     public static String toString(int[] array) {
         String result = "{";
