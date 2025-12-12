@@ -199,6 +199,64 @@ public class Main {
     };
 
         //Exercise 5
+
+    public static int absDiff(int[] array1, int[] array2) {
+        int sum1 = 0;
+        for (int x : array1) {
+            sum1 += x;
+        }
+        
+        int sum2 = 0;
+        for (int y : array2) {
+            sum2 += y;
+        }
+
+        int res = sum1 - sum2;
+        if (sum1 - sum2 < 0) {
+          res = sum2 - sum1;
+        }
+        return res;
+    }
+    
+    public static int[] swapEl(int[] array, int index, int value) {
+        int[] result = array;
+
+        if (index >= array.length || index < 0 || array[index]==value) {
+            return array;
+        }
+
+        result[index] = value;
+        return result;
+    }
+    
+    public static int[] findBestSwap(int[] team1, int[] team2) {
+        int[] bestSwap = new int[] {-1,-1, absDiff(team2, team1)};
+
+        if (absDiff(team2, team1) == 0) {
+            return bestSwap;
+        }
+        
+        for (int i=0; i<team1.length; i++) {
+            int x = team1[i];
+            for (int j=0; j<team2.length; j++) {
+                int y = team2[j];
+                int[] swap1 = swapEl(team1, i, y);
+                int[] swap2 = swapEl(team2, j, x);
+                int absDiff = absDiff(swap1, swap2);
+
+                if (absDiff < bestSwap[2]) {
+                    bestSwap[0] = i;
+                    bestSwap[1] = j;
+                    bestSwap[2] = absDiff;
+
+                    if (absDiff == 0) {
+                        return bestSwap;
+                    }
+                }
+            }
+        }
+        return bestSwap;
+    }
     
     //Debug Utilities
     public static String toString(int[] array) {
@@ -261,9 +319,13 @@ public class Main {
         // System.out.println(toString(longestWinStreak(streak4)));
         
         
-        System.out.println(toString(cleanQueue(new int[] {7, 3, 7, 3, 3, 7, 5, 3, 5})));
-        System.out.println(toString(cleanQueue(new int[] {1, 2, 3, 4, 5})));
-        System.out.println(toString(cleanQueue(new int[] {42, 42, 42})));
+        // System.out.println(toString(cleanQueue(new int[] {7, 3, 7, 3, 3, 7, 5, 3, 5})));
+        // System.out.println(toString(cleanQueue(new int[] {1, 2, 3, 4, 5})));
+        // System.out.println(toString(cleanQueue(new int[] {42, 42, 42})));
+
+        // System.out.println(toString(findBestSwap(new int[] {10, 20, 30}, new int[] {5, 15, 25})));
+        // System.out.println(toString(findBestSwap(new int[] {1,1,1}, new int[] {1,1,1})));
+        // System.out.println(toString(findBestSwap(new int[] {100}, new int[] {1})));
 
     
 
