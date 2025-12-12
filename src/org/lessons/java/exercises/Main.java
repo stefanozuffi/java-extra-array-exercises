@@ -3,6 +3,17 @@ package org.lessons.java.exercises;
 public class Main {
 
     //Utilities
+    public static int[] addElement(int[] array, int element) {
+        int[] res = new int[array.length + 1];
+
+        for (int i=0; i<array.length; i++) {
+            res[i] = array[i];
+        }
+        res[array.length] = element;
+
+        return res;
+    }
+
     public static boolean contains(int[] array, int element) {
         boolean res = false;
             for (int z=0; z< array.length; z++) {
@@ -32,12 +43,46 @@ public class Main {
         return res;
     }
 
+    public static int[] sort(int[] array) {
+        int[] res = new int[0];
+
+        while (res.length < array.length) {
+
+            for (int x : array) { 
+                boolean isLeast = true;
+
+                for (int y : array) {
+                    if (y!=x && !contains(res, y)) {
+
+                        if (y<x) {
+                            isLeast = false;
+                            break;
+                        }
+
+                    } else if (contains(res, x)) {
+                        isLeast = false;
+                    }
+                }
+
+                if (isLeast) {
+                    res = addElement(res, x);
+                }
+                if (!(res.length < array.length)) {
+                    break;
+                }
+            }
+        }
+        
+        return res;
+    }
+
+
+
+    //Assignments
     public static int[] filterKillFeed(int[] killFeed, int[] invalidTypes) {
         int[] result = new int[0];
-        int length = 0;
-        int[] prevRes = new int[0];
 
-        for (int i=0; i< killFeed.length; i++) {
+        for (int i=0; i < killFeed.length; i++) {
 
             //We chack if the current event is of invalid type;
             boolean isInvalid = false;
@@ -49,18 +94,7 @@ public class Main {
 
             //Updating the "result"
             if (!isInvalid) {
-                length += 1;
-                result = new int[length];
-                
-                for (int j=0; j < length; j++) {
-                    if (j == length - 1) {
-                        result[j] = killFeed[i];
-                    } else {
-                        result[j] = prevRes[j];             }
-                }
-
-                prevRes = result;
-                
+                result = addElement(result, killFeed[i]);
             }
         }
         return result;
@@ -69,7 +103,6 @@ public class Main {
     
     public static int[] findStalkers(int[] day1, int[] day2, int[] day3, int[] day4, int[] day5, int[] day6, int[] day7) {
         int[] result = new int[0];
-        int[] prev = result;
         
         int[][] days = new int[][] {day1, day2, day3, day4, day5, day6, day7};
         int[] concatDays = concat(days);
@@ -94,24 +127,15 @@ public class Main {
                 }
 
                 if (isStalker) {
-                    
-                    result = new int[result.length + 1];
-                    for (int j=0;j<prev.length; j++) {
-                        result[j] = prev[j];
-                    }
-                    result[prev.length] = suspect;
-                    prev = result;
-                    System.out.println("suspect added: " + suspect);
+                    result = addElement(result, suspect);
                 }
-            
-                
-            
             }
         }
-        return result;
+
+        return sort(result);
     }
 
-
+    //Debug Utilities
     public static String toString(int[] array) {
         String result = "{";
 
@@ -121,6 +145,8 @@ public class Main {
         result += "}";
         return result;
     }
+    
+    //MAIN METHOD
     public static void main(String[] args) {
         //filterKillFeed Test
         int[] events = new int[] {1, 5, 2, 6, 1, 3, 5};
@@ -132,22 +158,34 @@ public class Main {
         int[] events3 = new int[]{};
         int[] invT3 = new int[] {5,6};
 
-        // System.out.println(toString(filterKillFeed(events, invT)));
-        // System.out.println(toString(filterKillFeed(events2, invT2)));
-        // System.out.println(toString(filterKillFeed(events3, invT3)));
+        System.out.println(toString(filterKillFeed(events, invT)));
+        System.out.println(toString(filterKillFeed(events2, invT2)));
+        System.out.println(toString(filterKillFeed(events3, invT3)));
         
-        System.out.println(toString(concat(new int[][] {events, events2})));
-        System.out.println(toString(findStalkers(
-                new int[] {1, 5, 2, 6, 1, 3},
-                new int[] {1, 2, 3, 5},
-                new int[] {1, 5, 2, 6, 7, 3, 5},
-                new int[] {1, 2, 6, 1, 3},
-                new int[] {1, 5, 2, 6, 1, 3, 5},
-                new int[] {1, 5, 2, 6, 1, 3, 5},
-                new int[] {1, 5, 2, 6, 1, 3, 5})));
+        // System.out.println(toString(concat(new int[][] {events, events2})));
+        
+
+        // System.out.println(toString(findStalkers(
+        //     new int[] {1, 2, 3},
+        //     new int[] {1, 2, 3, 5},
+        //     new int[] {1,2,3,7,8},
+        //     new int[] {9,1,2,3},
+        //     new int[] {10,1,2,3},
+        //     new int[] {11,1,2,3,12},
+        //     new int[] {1,2,3})));
+
+            System.out.println(toString(findStalkers(
+                new int[] {3, 2, 1},
+                new int[] {2, 1, 3, 5},
+                new int[] {3,2,1,7,8},
+                new int[] {9,12,3, 2, 1},
+                new int[] {10,1,2,3},
+                new int[] {11,1,2,3,12},
+                new int[] {1,2,3})));
 
 
-        
+    
 
     }
+
 }
