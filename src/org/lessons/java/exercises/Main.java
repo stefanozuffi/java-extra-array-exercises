@@ -148,7 +148,7 @@ public class Main {
         return sort(result);
     }
 
-
+        //Exercise 3
     public static int[] longestWinStreak(char[] matches) {
         int[][] streaks = new int[0][2]; 
         int[] currentStreak = new int[2];
@@ -184,6 +184,19 @@ public class Main {
         }
         return result;
     }
+
+        //Exercise 4
+    public static int[] cleanQueue(int[] queue) {
+        int[] result = new int[0];
+
+        for (int e : queue) {
+            if (!contains(result, e)) {
+                System.out.println("result contains: " + e);
+                result = addElement(result, e);
+            }
+        }
+        return result;
+    };
 
     //Debug Utilities
     public static String toString(int[] array) {
@@ -235,18 +248,20 @@ public class Main {
 
         //System.out.println(toString(addElement2D(new int[][] {{3,5}, {4,7}}, new int[] {1, 2})[2]));
 
-        char[] streak = new char[] {'W', 'W', 'L', 'W', 'W', 'W', 'L', 'W'};
-        char[] streak2 = new char[] {'L', 'L', 'L', 'L'};
-        char[] streak3 = new char[] {'W', 'W', 'L', 'W', 'W'};
-        char[] streak4 = new char[] {};
+        // char[] streak = new char[] {'W', 'W', 'L', 'W', 'W', 'W', 'L', 'W'};
+        // char[] streak2 = new char[] {'L', 'L', 'L', 'L'};
+        // char[] streak3 = new char[] {'W', 'W', 'L', 'W', 'W'};
+        // char[] streak4 = new char[] {};
 
-        System.out.println(toString(longestWinStreak(streak)));
-        System.out.println(toString(longestWinStreak(streak2)));
-        System.out.println(toString(longestWinStreak(streak3)));
-        System.out.println(toString(longestWinStreak(streak4)));
+        //System.out.println(toString(longestWinStreak(streak)));
+        // System.out.println(toString(longestWinStreak(streak2)));
+        // System.out.println(toString(longestWinStreak(streak3)));
+        // System.out.println(toString(longestWinStreak(streak4)));
         
         
-
+        System.out.println(toString(cleanQueue(new int[] {7, 3, 7, 3, 3, 7, 5, 3, 5})));
+        System.out.println(toString(cleanQueue(new int[] {1, 2, 3, 4, 5})));
+        System.out.println(toString(cleanQueue(new int[] {42, 42, 42})));
 
     
 
