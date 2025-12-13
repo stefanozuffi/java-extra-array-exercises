@@ -14,6 +14,17 @@ public class Main {
         return res;
     }
 
+    public static int[] pop(int[] array) {
+        int[] res = new int[array.length - 1];
+
+        for (int i=0; i<array.length-1; i++) {
+            res[i] = array[i];
+        }
+
+        return res;
+
+    }
+    
     //Note: array's elements and element variable should have equal length
     public static int[][] addElement2D(int[][] array, int[] element) {
         int[][] res = new int[array.length + 1][element.length];
@@ -48,6 +59,15 @@ public class Main {
         return res;
     }
 
+    public static int sum(int[] values) {
+        int res = 0;
+        for (int value : values) {
+            res += value;
+        }
+
+        return res;
+    }
+    
     //N.B.: creates infinite loop with duplicates!
     public static int[] sort(int[] array) {
         int[] res = new int[0];
@@ -133,7 +153,11 @@ public class Main {
         return res;
     }
 
+
+
+
     // Assignments
+
         //Exercise 1
     public static int[] filterKillFeed(int[] killFeed, int[] invalidTypes) {
         int[] result = new int[0];
@@ -155,6 +179,8 @@ public class Main {
         }
         return result;
     }
+
+
 
         //Exercise 2
     public static int[] findStalkers(int[] day1, int[] day2, int[] day3, int[] day4, int[] day5, int[] day6, int[] day7) {
@@ -190,6 +216,8 @@ public class Main {
 
         return sort(result);
     }
+
+
 
         //Exercise 3
     public static int[] longestWinStreak(char[] matches) {
@@ -228,6 +256,8 @@ public class Main {
         return result;
     }
 
+
+
         //Exercise 4
     public static int[] cleanQueue(int[] queue) {
         int[] result = new int[0];
@@ -240,6 +270,8 @@ public class Main {
         }
         return result;
     };
+
+
 
         //Exercise 5
     public static int absDiff(int[] array1, int[] array2) {
@@ -300,6 +332,8 @@ public class Main {
         return bestSwap;
     }
     
+
+
         //Exercise 6
     public static int avg(int[] values) {
         int sum = 0;
@@ -324,6 +358,8 @@ public class Main {
         
         return result;
     }
+
+
 
         //Exercise 7
     public static int[] mergeServersV1(int[] server1, int[] server2) {
@@ -362,6 +398,57 @@ public class Main {
         return res;    
     }
     
+
+        //Exercise 8
+    public static int[] bingeOptimizer(int[] episodes, int maxTime) {
+        int[] bestPath = new int[0];
+        int[] solution = new int[2];
+
+        boolean noSol = true;
+        
+        for (int i=0; i < episodes.length; i++) {
+            if (bestPath.length >= episodes.length - i) {
+                break;
+            } 
+
+            int[] currentPath = new int[] {episodes[i]};
+
+            if (sum(currentPath) > maxTime) {
+                noSol = noSol && true;
+                break;
+            } 
+        
+            noSol = noSol && false;
+            if (currentPath.length >= bestPath.length) {
+                bestPath = currentPath;
+                solution = new int[] {bestPath.length, i};
+            }
+
+            for (int j=i+1; j<episodes.length; j++) {
+                currentPath = addElement(currentPath, episodes[j]);
+
+                if (sum(currentPath) > maxTime) {
+                    currentPath = pop(currentPath);
+                } else if (sum(currentPath) == maxTime) {
+                    break;
+                }
+            }
+
+            if (currentPath.length > bestPath.length) {
+                bestPath = currentPath;
+                solution = new int[] {bestPath.length, i};
+            }
+
+            if (bestPath.length == episodes.length) {
+                break;
+            }
+        }
+
+        if (noSol) {
+            return new int[] {0,-1};
+        }
+        return solution;
+    }
     
     //Debug Utilities
     public static String toString(int[] array) {
@@ -442,10 +529,15 @@ public class Main {
         // System.out.println(toString(mergeServersV1(new int[] {1, 1, 1}, new int[] {1, 1, 1})));
         // System.out.println(toString(mergeServersV1(new int[] {}, new int[] {5, 10, 15, 3})));
 
-        System.out.println(toString(mergeServers(new int[] {10, 20, 30}, new int[] {10, 30, 40})));
-        System.out.println(toString(mergeServers(new int[] {1, 3, 5, 7}, new int[] {2, 3, 6, 8})));
-        System.out.println(toString(mergeServers(new int[] {1, 1, 1}, new int[] {1, 1, 1})));
-        System.out.println(toString(mergeServers(new int[] {}, new int[] {5, 10, 15})));
+        // System.out.println(toString(mergeServers(new int[] {10, 20, 30}, new int[] {10, 30, 40})));
+        // System.out.println(toString(mergeServers(new int[] {1, 3, 5, 7}, new int[] {2, 3, 6, 8})));
+        // System.out.println(toString(mergeServers(new int[] {1, 1, 1}, new int[] {1, 1, 1})));
+        // System.out.println(toString(mergeServers(new int[] {}, new int[] {5, 10, 15})));
+
+        System.out.println(toString(bingeOptimizer(new int[] {45, 42, 50, 48, 45, 52, 44}, 180)));
+        System.out.println(toString(bingeOptimizer(new int[] {60, 60, 60}, 120)));
+        System.out.println(toString(bingeOptimizer(new int[] {200, 200, 200}, 100)));
+        System.out.println(toString(bingeOptimizer(new int[] {}, 1000)));
     } 
 
 }
