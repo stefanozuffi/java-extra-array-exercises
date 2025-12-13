@@ -38,30 +38,24 @@ public class Main {
 
     public static int[] concat(int[][] arrays) {
         int[] res = new int[0];
-        int[] prev = res;
+        
             for (int[] array : arrays) {
                 for (int i = 0; i < array.length; i++) {
-                    res = new int[res.length + 1];
-
-                    for (int j=0; j<prev.length;j++) {
-                        res[j] = prev[j];                    
-                    }
-
-                    res[prev.length] = array[i];
-                    prev = res;
+                    res = addElement(res, array[i]);
                 }
             }
-    
+        
         return res;
     }
 
+    //N.B.: creates infinite loop with duplicates!
     public static int[] sort(int[] array) {
         int[] res = new int[0];
 
         while (res.length < array.length) {
 
             for (int x : array) { 
-                boolean isLeast = true;
+                boolean isLeast = true; 
 
                 for (int y : array) {
                     if (y!=x && !contains(res, y)) {
@@ -88,7 +82,56 @@ public class Main {
         return res;
     }
 
+    public static int[] sortPlus(int[] array) {
+        int[] res = new int[0];
+        int[] usedInd = new int[0];
 
+        while (res.length < array.length) {
+            for (int i=0; i<array.length; i++) {
+                if (contains(usedInd, i)) {
+                    continue;
+                }
+
+                boolean isLeast = true;
+                for (int j=0; j<array.length; j++) {
+                    if (i != j && !contains(usedInd, j)) {
+                        if (array[i] > array[j]) {
+                            isLeast = false;
+                        }
+                    }
+                }
+    
+                if (isLeast) {
+                    res = addElement(res, array[i]);
+                    usedInd = addElement(usedInd, i);
+                }
+            }
+        }
+    
+        return res;
+    }
+
+    public static int[] bestSorting(int[] array) {
+        int[] res = array.clone();
+
+        for (int i=0; i<array.length; i++) {
+            int minIdx = i;
+
+            for (int j=i+1; j< array.length; j++) {
+                if (res[j] < res[i]) {
+                    minIdx = j;
+                }
+            }
+
+            int subval = res[i];
+            res[i] = res[minIdx];
+            res[minIdx] = subval;
+            
+        }
+
+
+        return res;
+    }
 
     // Assignments
         //Exercise 1
@@ -281,6 +324,45 @@ public class Main {
         
         return result;
     }
+
+        //Exercise 7
+    public static int[] mergeServersV1(int[] server1, int[] server2) {
+        return sortPlus(concat(new int[][] {server1, server2}));
+    }
+
+    public static int[] mergeServers(int[] server1, int[] server2) {
+        int [] res = new int[0];
+
+        //Check for empty arguments
+        if (server1.length == 0) {
+            return server2;
+        } else if (server2.length == 0) {
+            return server2;
+        }
+
+        //Construct sorted merge
+        int idx1 = 0;
+        int idx2 = 0;
+
+        for (int z=0; z < server1.length + server2.length; z++) {
+            if (server1[idx1] <= server2[idx2]) {
+                res = addElement(res, server1[idx1]);
+
+                if (idx1 < server1.length - 1) {
+                    idx1 += 1;
+                }
+            } else {
+                res = addElement(res, server2[idx2]);
+                if (idx2 < server2.length - 1) {
+                    idx2 += 1;
+                }
+            }
+        }
+
+        return res;    
+    }
+    
+    
     //Debug Utilities
     public static String toString(int[] array) {
         String result = "{";
@@ -351,10 +433,19 @@ public class Main {
         // System.out.println(toString(findBestSwap(new int[] {100}, new int[] {1})));
 
         // System.out.println(avg(new int[] {2,1,5}));
-        System.out.println(toString(detectViralSpikes(new int[] {100, 120, 110, 400, 150, 140, 600})));
-        System.out.println(toString(detectViralSpikes(new int[] {10, 20, 30, 40, 50})));
-        System.out.println(toString(detectViralSpikes(new int[] {10, 20, 30})));
+        // System.out.println(toString(detectViralSpikes(new int[] {100, 120, 110, 400, 150, 140, 600})));
+        // System.out.println(toString(detectViralSpikes(new int[] {10, 20, 30, 40, 50})));
+        // System.out.println(toString(detectViralSpikes(new int[] {10, 20, 30})));
 
-    }
+        // System.out.println(toString(mergeServersV1(new int[] {10, 20, 30}, new int[] {10, 30, 40})));
+        // System.out.println(toString(mergeServersV1(new int[] {1, 3, 5, 7}, new int[] {2, 3, 6, 8})));
+        // System.out.println(toString(mergeServersV1(new int[] {1, 1, 1}, new int[] {1, 1, 1})));
+        // System.out.println(toString(mergeServersV1(new int[] {}, new int[] {5, 10, 15, 3})));
+
+        System.out.println(toString(mergeServers(new int[] {10, 20, 30}, new int[] {10, 30, 40})));
+        System.out.println(toString(mergeServers(new int[] {1, 3, 5, 7}, new int[] {2, 3, 6, 8})));
+        System.out.println(toString(mergeServers(new int[] {1, 1, 1}, new int[] {1, 1, 1})));
+        System.out.println(toString(mergeServers(new int[] {}, new int[] {5, 10, 15})));
+    } 
 
 }
