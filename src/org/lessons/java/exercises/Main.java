@@ -199,7 +199,6 @@ public class Main {
     };
 
         //Exercise 5
-
     public static int absDiff(int[] array1, int[] array2) {
         int sum1 = 0;
         for (int x : array1) {
@@ -258,6 +257,30 @@ public class Main {
         return bestSwap;
     }
     
+        //Exercise 6
+    public static int avg(int[] values) {
+        int sum = 0;
+
+        for (int i =0; i<values.length;i++) {
+            sum += values[i];
+        }
+
+        return sum / values.length;
+    }
+    
+    public static int[] detectViralSpikes(int[] hourlyViews) {
+        int[] result = new int[0];
+
+        for (int i=3; i<hourlyViews.length; i++) {
+            int[] lastThree = new int[] {hourlyViews[i-1], hourlyViews[i-2], hourlyViews[i-3]};
+
+            if (avg(lastThree) * 2 <= hourlyViews[i]) {
+                result = addElement(result, i);
+            }
+        }
+        
+        return result;
+    }
     //Debug Utilities
     public static String toString(int[] array) {
         String result = "{";
@@ -327,7 +350,10 @@ public class Main {
         // System.out.println(toString(findBestSwap(new int[] {1,1,1}, new int[] {1,1,1})));
         // System.out.println(toString(findBestSwap(new int[] {100}, new int[] {1})));
 
-    
+        // System.out.println(avg(new int[] {2,1,5}));
+        System.out.println(toString(detectViralSpikes(new int[] {100, 120, 110, 400, 150, 140, 600})));
+        System.out.println(toString(detectViralSpikes(new int[] {10, 20, 30, 40, 50})));
+        System.out.println(toString(detectViralSpikes(new int[] {10, 20, 30})));
 
     }
 
